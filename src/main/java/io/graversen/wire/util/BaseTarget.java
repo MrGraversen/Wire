@@ -4,26 +4,32 @@ import feign.Request;
 import feign.RequestTemplate;
 import feign.Target;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.function.UnaryOperator;
 
 public abstract class BaseTarget<T> extends Target.HardCodedTarget<T> {
-    private final RequestTemplateInterceptor requestTemplateInterceptor;
+    private final List<RequestTemplateInterceptor> requestTemplateInterceptors;
+    private final RequestTemplateInterceptor compiledInterceptor;
 
     protected BaseTarget(Class<T> type, String url) {
-        super(type, url);
-        this.requestTemplateInterceptor = null;
+        this(type, url, List.of());
     }
 
     public BaseTarget(Class<T> type, String url, RequestTemplateInterceptor requestTemplateInterceptor) {
+        this(type, url, List.of(requestTemplateInterceptor));
+    }
+
+    public BaseTarget(Class<T> type, String url, List<RequestTemplateInterceptor> requestTemplateInterceptors) {
         super(type, url);
-        this.requestTemplateInterceptor = requestTemplateInterceptor;
+        this.requestTemplateInterceptors = requestTemplateInterceptors;
+        this.compiledInterceptor = requestTemplateInterceptors.stream()
+                .reduce(RequestTemplateInterceptor.identity(), RequestTemplateInterceptor::then);
     }
 
     @Override
     public Request apply(RequestTemplate input) {
-        if (Objects.nonNull(requestTemplateInterceptor)) {
-            input = requestTemplateInterceptor.apply(input);
+        if (Objects.nonNull(compiledInterceptor)) {
+            input = compiledInterceptor.apply(input);
         }
 
         return super.apply(input);
