@@ -8,4 +8,7 @@ public interface HetznerCloud {
 
     @RequestLine("POST /servers")
     ServerCreated create(CreateServer createServer);
+
+    @RequestLine("GET /ssh_keys")
+    SshKeys sshKeys();
 }
