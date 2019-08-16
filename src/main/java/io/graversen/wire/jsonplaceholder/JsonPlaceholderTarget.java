@@ -1,9 +1,12 @@
 package io.graversen.wire.jsonplaceholder;
 
-import feign.Target;
+import io.graversen.wire.util.BaseTarget;
 
-public abstract class JsonPlaceholderTarget {
-    public static Target<JsonPlaceholder> instance() {
-        return new Target.HardCodedTarget<>(JsonPlaceholder.class, "https://jsonplaceholder.typicode.com");
+public class JsonPlaceholderTarget extends BaseTarget<JsonPlaceholder> {
+    private static final Class<JsonPlaceholder> TARGET_CLASS = JsonPlaceholder.class;
+    private static final String TARGET_URL = "https://jsonplaceholder.typicode.com/";
+
+    public JsonPlaceholderTarget() {
+        super(TARGET_CLASS, TARGET_URL);
     }
 }
