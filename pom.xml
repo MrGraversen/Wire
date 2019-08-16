@@ -9,13 +9,24 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <open-feign-version>10.3.0</open-feign-version>
+
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.release>11</maven.compiler.release>
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+            <version>${open-feign-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-gson</artifactId>
+            <version>${open-feign-version}</version>
+        </dependency>
     </dependencies>
 
 </project>
